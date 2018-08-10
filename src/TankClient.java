@@ -3,25 +3,37 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TankClient extends Frame {
 
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
 
-    Tank myTank = new Tank(50, 50,this);
+    Tank myTank = new Tank(50, 50,true, this);
+    Tank enemyTank = new Tank(120, 80,false, this);
     // Missile m= new Missile(50,50, Tank.Direction.R);
-    Missile m = null;
+
+    List<Missile> missiles = new ArrayList<>();
+
 
     Image offScreenImage = null;
 
 
     @Override
     public void paint(Graphics g) {
-        myTank.draw(g);
-        if (m != null) {
-            m.draw(g);
+
+        g.setColor(Color.yellow);
+        g.drawString("missiles count: " + missiles.size(), 10, 10);
+        for (int i = 0; i < missiles.size(); i++) {
+            Missile missile = missiles.get(i);
+            missile.hitTank(enemyTank);
+            missile.draw(g);
         }
+        myTank.draw(g);
+        enemyTank.draw(g);
+
     }
 
     @Override
@@ -32,7 +44,7 @@ public class TankClient extends Frame {
 
         Graphics gOffScreen = offScreenImage.getGraphics();
         Color c = gOffScreen.getColor();
-        gOffScreen.setColor(Color.black);
+        gOffScreen.setColor(Color.DARK_GRAY);
         gOffScreen.fillRect(0, 0, GAME_WIDTH, 600);
         gOffScreen.setColor(c);
         paint(gOffScreen);
@@ -57,7 +69,7 @@ public class TankClient extends Frame {
             }
         });
 
-        this.setBackground(Color.black);
+        this.setBackground(Color.green);
         this.setResizable(false);
 
         this.addKeyListener(new KeyMonitor());
