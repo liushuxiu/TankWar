@@ -23,6 +23,7 @@ public class TankClient extends Frame {
 //    Explode e = new Explode(70,70,this );
 
     Image offScreenImage = null;
+    NetClient nc=new NetClient(this);
 
 
     @Override
@@ -99,6 +100,8 @@ public class TankClient extends Frame {
         this.addKeyListener(new KeyMonitor());
         setVisible(true);
         new Thread(new PaintThread()).start();
+
+        nc.connect("127.0.0.1",TankServer.TCP_PORT);
     }
 
     private class PaintThread implements Runnable {

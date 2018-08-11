@@ -5,19 +5,22 @@ import java.util.List;
 import java.util.Random;
 
 public class Tank {
+     int id;
 
     public static final int XSPEED = 5;
     public static final int YSPEED = 5;
     public static final int WIDTH=30;
     public static final int HEIGHT=30;
-    private int x;
-    private int y;
+     int x;
+     int y;
+
     private boolean bL = false;
     private boolean bU = false;
     private boolean bR = false;
     private boolean bD = false;
 
-    private boolean good;
+
+     boolean good;
     private boolean live=true;
 
     private int step=random.nextInt(12)+3;
@@ -28,7 +31,7 @@ public class Tank {
 
 
 
-    private Dir dir = Dir.STOP;
+    public Dir dir = Dir.STOP;
     private Dir ptDir =Dir.D;
 
 
@@ -83,6 +86,7 @@ public class Tank {
             g.setColor(Color.blue);
         }
         g.fillOval(x, y, WIDTH, HEIGHT);
+        g.drawString("id:"+id,x,y-20);
 
 
         g.setColor(Color.YELLOW);
