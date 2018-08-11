@@ -11,7 +11,7 @@ public class TankClient extends Frame {
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
 
-    Tank myTank = new Tank(50, 50,true, Tank.Direction.STOP, this);
+    Tank myTank = new Tank(50, 50,true, Dir.STOP, this);
 //    Tank enemyTank = new Tank(120, 80,false, this);
     // Missile m= new Missile(50,50, Tank.Direction.R);
 
@@ -79,9 +79,9 @@ public class TankClient extends Frame {
 
     private void lauchFrame() {
 
-        for (int i = 0; i < 10; i++) {
-            tanks.add(new Tank(50+40*(i+1),50,false, Tank.Direction.D,this));
-        }
+//        for (int i = 0; i < 10; i++) {
+//            tanks.add(new Tank(50+40*(i+1),50,false, Dir.D,this));
+//        }
 
         this.setLocation(400, 300);
         this.setSize(GAME_WIDTH, 600);
