@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Tank {
 
@@ -18,6 +19,10 @@ public class Tank {
 
     private boolean good;
     private boolean live=true;
+
+    private int step=random.nextInt(12)+3;
+
+    private static Random random = new Random();
 
     TankClient tc;
 
@@ -37,13 +42,23 @@ public class Tank {
 
 
     }
+
+    public boolean isGood() {
+        return good;
+    }
+
+    public void setGood(boolean good) {
+        this.good = good;
+    }
+
     public Rectangle getRect(){
         return new Rectangle(x,y,WIDTH,HEIGHT);
     }
 
-    public Tank(int x, int y,boolean good, TankClient tc){
+    public Tank(int x, int y,boolean good, Direction dir,TankClient tc){
         this(x,y,good);
         this.tc=tc;
+        this.dir=dir;
     }
 
     public boolean isLive() {
@@ -56,7 +71,13 @@ public class Tank {
 
     public void draw(Graphics g) {
 
-        if (!live) return;
+        if (!live) {
+            if (!good){
+                tc.tanks.remove(this);
+            }
+
+            return;
+        }
 
         Color c = g.getColor();
         if (good){ g.setColor(Color.RED);}
@@ -99,9 +120,12 @@ public class Tank {
     }
 
    public   Missile fire(){
+        if (!live){
+            return null;
+        }
         int x =this.x+Tank.WIDTH/2-Missile.WIDTH/2;
         int y=this.y+Tank.HEIGHT/2-Missile.HEIGHT/2;
-        Missile m =new Missile(x,y,ptDir,this.tc);
+        Missile m =new Missile(x,y,good,ptDir,this.tc);
         tc.missiles.add(m );
         return m;
 
@@ -148,6 +172,24 @@ public class Tank {
         if (y<=30) y=30;
         if (x+Tank.WIDTH>TankClient.GAME_HEIGHT) x=TankClient.GAME_WIDTH-Tank.WIDTH;
         if (y+Tank.HEIGHT> TankClient.GAME_HEIGHT)  y=TankClient.GAME_HEIGHT- Tank.HEIGHT;
+
+        int count=0;
+        if (!good){
+            Direction []dirs=Direction.values();
+
+            if (step==0){
+                step=random.nextInt(12)+3;
+                int randomNext = random.nextInt(dirs.length);
+                dir=dirs[randomNext];
+            }
+
+            step--;
+            if (random.nextInt(50)>48){
+                this.fire();
+            }
+
+
+        }
     }
 
     public void keyPressed(KeyEvent e) {

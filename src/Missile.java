@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.List;
 
 public class Missile {
     public static final int XSPEED = 10;
@@ -10,6 +11,8 @@ public class Missile {
 
     private boolean live = true;
     private TankClient tc;
+
+    private boolean good;
 
 
     public boolean isLive() {
@@ -23,17 +26,37 @@ public class Missile {
         this.dir = dir;
     }
 
-    public Missile(int x, int y, Tank.Direction dir, TankClient tc) {
+    public Missile(int x, int y,boolean good, Tank.Direction dir, TankClient tc) {
         this(x, y, dir);
         this.tc = tc;
+        this.good=good;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    public boolean hitTanks(List<Tank> tanks){
+
+
+        for (int i = 0; i < tanks.size(); i++) {
+            if (hitTank(tanks.get(i))){
+                return  true;
+            }
+        }
+        return false;
     }
 
     public boolean hitTank(Tank t){
 
 
-        if (this.getRect().intersects(t.getRect())&&t.isLive()){
+        if (this.live&&this.getRect().intersects(t.getRect())&&t.isLive()&&this.good!=t.isGood()){
             t.setLive(false);
             this.live=false;
+            Explode e = new Explode(x,y,tc);
+
+            tc.explodes.add(e);
             return true;
         }
 

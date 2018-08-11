@@ -11,12 +11,16 @@ public class TankClient extends Frame {
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
 
-    Tank myTank = new Tank(50, 50,true, this);
-    Tank enemyTank = new Tank(120, 80,false, this);
+    Tank myTank = new Tank(50, 50,true, Tank.Direction.STOP, this);
+//    Tank enemyTank = new Tank(120, 80,false, this);
     // Missile m= new Missile(50,50, Tank.Direction.R);
+
+    List<Tank> tanks = new ArrayList<>();
 
     List<Missile> missiles = new ArrayList<>();
 
+    List<Explode> explodes=new ArrayList<>();
+//    Explode e = new Explode(70,70,this );
 
     Image offScreenImage = null;
 
@@ -26,13 +30,28 @@ public class TankClient extends Frame {
 
         g.setColor(Color.yellow);
         g.drawString("missiles count: " + missiles.size(), 10, 10);
+        g.drawString("explodes count: " + explodes.size(), 10, 25);
+        g.drawString("tanks count: " + tanks.size(), 10, 40);
         for (int i = 0; i < missiles.size(); i++) {
             Missile missile = missiles.get(i);
-            missile.hitTank(enemyTank);
+//            missile.hitTank(enemyTank);
+            missile.hitTanks(tanks);
+            missile.hitTank(myTank);
             missile.draw(g);
         }
+        for (int i = 0; i < explodes.size(); i++) {
+            Explode e =explodes.get(i);
+            e.draw(g);
+
+        }
         myTank.draw(g);
-        enemyTank.draw(g);
+
+        for (int i = 0; i < tanks.size(); i++) {
+            Tank t = tanks.get(i);
+            t.draw(g);
+
+        }
+//        enemyTank.draw(g);
 
     }
 
@@ -59,6 +78,11 @@ public class TankClient extends Frame {
     }
 
     private void lauchFrame() {
+
+        for (int i = 0; i < 10; i++) {
+            tanks.add(new Tank(50+40*(i+1),50,false, Tank.Direction.D,this));
+        }
+
         this.setLocation(400, 300);
         this.setSize(GAME_WIDTH, 600);
         this.setTitle("坦克大战");
@@ -84,7 +108,7 @@ public class TankClient extends Frame {
             while (true) {
                 repaint();
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(20);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
