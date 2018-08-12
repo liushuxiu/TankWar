@@ -1,3 +1,6 @@
+
+import client.NetClient;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -10,6 +13,11 @@ public class TankClient extends Frame {
 
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
+    public static final int TCP_PORT = 8888;
+    public static final String IP="127.0.0.1";
+
+
+    NetClient nc = new NetClient();
 
     Tank myTank = new Tank(50, 50,true, Dir.STOP, this);
 //    Tank enemyTank = new Tank(120, 80,false, this);
@@ -99,6 +107,8 @@ public class TankClient extends Frame {
         this.addKeyListener(new KeyMonitor());
         setVisible(true);
         new Thread(new PaintThread()).start();
+
+        nc.start(IP,TCP_PORT);
     }
 
     private class PaintThread implements Runnable {
