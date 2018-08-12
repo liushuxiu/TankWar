@@ -6,43 +6,40 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 
-public class TankNewMsg implements Msg{
-    int msgType= Msg.TANK_NEW_MSG;
+public class TankMoveMsg implements Msg{
+    int msgType= Msg.TANK_MOVE_MSG;
+    int id;
+    Dir dir;
 
-    Tank tank;
     TankClient tc;
 
-    public TankNewMsg(Tank tank){
-        this.tank=tank;
-
+    public TankMoveMsg(int id, Dir dir) {
+        this.id = id;
+        this.dir = dir;
     }
 
-    public TankNewMsg(TankClient tc){
-        this.tc=tc;
-    }
-    public TankNewMsg(){
-
+    public TankMoveMsg(TankClient tc) {
+        this.tc = tc;
     }
 
     @Override
-    public void send(DatagramSocket ds, String IP,int udpPort) {
+    public void send(DatagramSocket ds, String ip, int udpPort) {
+
         ByteArrayOutputStream baos= new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
 
         try {
             dos.writeInt(msgType);
-            dos.writeInt(tank.id);
-            dos.writeInt(tank.x);
-            dos.writeInt(tank.y);
-            dos.writeInt(tank.dir.ordinal());
-            dos.writeBoolean(tank.isGood());
+
+            dos.writeInt(id);
+            dos.writeInt(dir.ordinal());
         }catch (Exception e){
             e.printStackTrace();
         }
 
         byte []buf =baos.toByteArray();
 
-        DatagramPacket dp = new DatagramPacket(buf, buf.length, new InetSocketAddress(IP,udpPort));
+        DatagramPacket dp = new DatagramPacket(buf, buf.length, new InetSocketAddress(ip,udpPort));
         try {
             ds.send(dp);
         } catch (IOException e) {
@@ -52,26 +49,27 @@ public class TankNewMsg implements Msg{
 
     @Override
     public void parse(DataInputStream dis) {
-
         try {
             int id =dis.readInt();
             if (id==tc.myTank.id){
                 return;
             }
-            int x=dis.readInt();
-            int y=dis.readInt();
+
             Dir dir=Dir.values()[dis.readInt()];
-            boolean good=dis.readBoolean();
-            System.out.println("id: "+id+"---x:  "+x+"---y:"+y+"---dir:  "+dir+"--good:"+good);
 
-            Tank t = new Tank(x, y, good, dir, tc);
-            t.id=id;
-            tc.tanks.add(t);
+            boolean exist= false;
+            for (int i = 0; i < tc.tanks.size(); i++) {
+                Tank t=tc.tanks.get(i);
+                if (t.id==id){
+                    t.dir=dir;
+                    exist=true;
+                    break;
+                }
 
+            }
 
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 }

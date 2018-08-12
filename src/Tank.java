@@ -244,6 +244,8 @@ public class Tank {
         locateDirection();
     }
     void locateDirection() {
+        Dir oldDir=this.dir;
+
         if (bL && !bU && !bR && !bD) dir = Dir.L;
         else if (bL && bU && !bR && !bD) dir = Dir.LU;
         else if (!bL && bU && !bR && !bD) dir = Dir.U;
@@ -254,6 +256,12 @@ public class Tank {
         else if (bL && !bU && !bR && bD) dir = Dir.LD;
         else if (!bL && !bU && !bR && !bD) {
             dir = Dir.STOP;
+        }
+
+        if (dir!=oldDir){
+
+            TankMoveMsg msg = new TankMoveMsg(id,dir);
+            tc.nc.send(msg);
         }
     }
 
