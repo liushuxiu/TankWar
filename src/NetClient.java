@@ -69,9 +69,6 @@ public class NetClient {
         public void run() {
 
             while (ds != null) {
-                System.out.println(ds.isClosed());
-
-                System.out.println("-----------");
                 DatagramPacket dp = new DatagramPacket(buf, buf.length);
                 try {
                     ds.receive(dp);
