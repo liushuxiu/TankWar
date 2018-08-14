@@ -1,3 +1,4 @@
+
 import java.awt.*;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class Missile {
         this.dir = dir;
     }
 
-    public Missile(int x, int y,boolean good, Dir dir, TankClient tc) {
+    public Missile(int x, int y, boolean good, Dir dir, TankClient tc) {
         this(x, y, dir);
         this.tc = tc;
         this.good=good;

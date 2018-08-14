@@ -1,21 +1,25 @@
+
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
 public class Tank {
 
+    int id;
+
     public static final int XSPEED = 5;
     public static final int YSPEED = 5;
     public static final int WIDTH=30;
     public static final int HEIGHT=30;
-    private int x;
-    private int y;
+     int x;
+     int y;
     private boolean bL = false;
     private boolean bU = false;
     private boolean bR = false;
     private boolean bD = false;
 
-    private boolean good;
+     boolean good;
     private boolean live=true;
 
     private int step=random.nextInt(12)+3;
@@ -26,8 +30,8 @@ public class Tank {
 
 
 
-    private Dir dir = Dir.STOP;
-    private Dir ptDir =Dir.D;
+    Dir dir = Dir.STOP;
+    Dir ptDir = Dir.D;
 
 
 
@@ -51,7 +55,7 @@ public class Tank {
         return new Rectangle(x,y,WIDTH,HEIGHT);
     }
 
-    public Tank(int x, int y,boolean good, Dir dir,TankClient tc){
+    public Tank(int x, int y, boolean good, Dir dir, TankClient tc){
         this(x,y,good);
         this.tc=tc;
         this.dir=dir;
@@ -81,33 +85,34 @@ public class Tank {
             g.setColor(Color.blue);
         }
         g.fillOval(x, y, WIDTH, HEIGHT);
+        g.drawString("id:"+id,x,y-10);
 
 
         g.setColor(Color.YELLOW);
         switch (ptDir) {
             case L:
-                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x,y+Tank.HEIGHT/2);
+                g.drawLine(x+ Tank.WIDTH/2,y+ Tank.HEIGHT/2,x,y+ Tank.HEIGHT/2);
                 break;
             case LU:
-                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x,y);
+                g.drawLine(x+ Tank.WIDTH/2,y+ Tank.HEIGHT/2,x,y);
                 break;
             case U:
-                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH/2,y);
+                g.drawLine(x+ Tank.WIDTH/2,y+ Tank.HEIGHT/2,x+ Tank.WIDTH/2,y);
                 break;
             case RU:
-                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH,y);
+                g.drawLine(x+ Tank.WIDTH/2,y+ Tank.HEIGHT/2,x+ Tank.WIDTH,y);
                 break;
             case R:
-                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH,y+Tank.HEIGHT/2);
+                g.drawLine(x+ Tank.WIDTH/2,y+ Tank.HEIGHT/2,x+ Tank.WIDTH,y+ Tank.HEIGHT/2);
                 break;
             case RD:
-                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH,y+Tank.HEIGHT);
+                g.drawLine(x+ Tank.WIDTH/2,y+ Tank.HEIGHT/2,x+ Tank.WIDTH,y+ Tank.HEIGHT);
                 break;
             case D:
-                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x+Tank.WIDTH/2,y+Tank.HEIGHT);
+                g.drawLine(x+ Tank.WIDTH/2,y+ Tank.HEIGHT/2,x+ Tank.WIDTH/2,y+ Tank.HEIGHT);
                 break;
             case LD:
-                g.drawLine(x+Tank.WIDTH/2,y+Tank.HEIGHT/2,x,y+Tank.HEIGHT);
+                g.drawLine(x+ Tank.WIDTH/2,y+ Tank.HEIGHT/2,x,y+ Tank.HEIGHT);
                 break;
         }
         g.setColor(c);
@@ -115,12 +120,12 @@ public class Tank {
         move();
     }
 
-   public   Missile fire(){
+   public Missile fire(){
         if (!live){
             return null;
         }
-        int x =this.x+Tank.WIDTH/2-Missile.WIDTH/2;
-        int y=this.y+Tank.HEIGHT/2-Missile.HEIGHT/2;
+        int x =this.x+ Tank.WIDTH/2- Missile.WIDTH/2;
+        int y=this.y+ Tank.HEIGHT/2- Missile.HEIGHT/2;
         Missile m =new Missile(x,y,good,ptDir,this.tc);
         tc.missiles.add(m );
         return m;
@@ -161,17 +166,17 @@ public class Tank {
                 break;
         }
 
-        if (this.dir !=Dir.STOP){
+        if (this.dir != Dir.STOP){
             this.ptDir=this.dir;
         }
         if (x < 0) x=0;
         if (y<=30) y=30;
-        if (x+Tank.WIDTH>TankClient.GAME_HEIGHT) x=TankClient.GAME_WIDTH-Tank.WIDTH;
-        if (y+Tank.HEIGHT> TankClient.GAME_HEIGHT)  y=TankClient.GAME_HEIGHT- Tank.HEIGHT;
+        if (x+ Tank.WIDTH> TankClient.GAME_HEIGHT) x= TankClient.GAME_WIDTH- Tank.WIDTH;
+        if (y+ Tank.HEIGHT> TankClient.GAME_HEIGHT)  y= TankClient.GAME_HEIGHT- Tank.HEIGHT;
 
         int count=0;
         if (!good){
-            Dir []dirs=Dir.values();
+            Dir[]dirs= Dir.values();
 
             if (step==0){
                 step=random.nextInt(12)+3;

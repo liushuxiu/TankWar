@@ -1,5 +1,4 @@
 
-import client.NetClient;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -17,9 +16,9 @@ public class TankClient extends Frame {
     public static final String IP="127.0.0.1";
 
 
-    NetClient nc = new NetClient();
+ public    NetClient nc = new NetClient(this);
 
-    Tank myTank = new Tank(50, 50,true, Dir.STOP, this);
+public Tank myTank = new Tank(50, 50,true, Dir.STOP, this);
 //    Tank enemyTank = new Tank(120, 80,false, this);
     // Missile m= new Missile(50,50, Tank.Direction.R);
 

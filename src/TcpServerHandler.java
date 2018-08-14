@@ -1,27 +1,31 @@
-package server;
-
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.concurrent.EventExecutorGroup;
-
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.net.SocketAddress;
 
 public class TcpServerHandler extends SimpleChannelInboundHandler<String> {
 
+    private TankServer server;
 
-
+    public TcpServerHandler(TankServer server) {
+        this.server=server;
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         if (msg.equals("close")){
             System.out.println("客户端的TCP连接已经关闭");
             ctx.close();
+            return;
         }
-        System.out.println(ctx.channel().remoteAddress()+", "+msg);
+        String address= String.valueOf(ctx.channel().remoteAddress());
+         address=address.replace("/", "");
+        String[] arr = address.split(":");
+        String ip =arr[0];
+        int udpPort=Integer.valueOf(msg);
+         TankServer.Client client = server.new Client(ip, udpPort);
+        server.clients.add(client);
+
     }
 
 
