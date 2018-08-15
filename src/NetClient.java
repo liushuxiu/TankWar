@@ -18,7 +18,7 @@ public class NetClient {
     Channel myChannel;
 
 
-    public static int UDP_PORT_START = 2221;
+    public static int UDP_PORT_START = 2225;
     public int udpPort;
 
     public NetClient(TankClient tc) {

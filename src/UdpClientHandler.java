@@ -1,5 +1,6 @@
 import com.sun.corba.se.spi.ior.Writeable;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramPacket;
@@ -13,10 +14,7 @@ public class UdpClientHandler extends SimpleChannelInboundHandler<DatagramPacket
         this.tc=tc;
     }
 
-    @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        super.userEventTriggered(ctx, evt);
-    }
+
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket packet) throws Exception {
@@ -27,6 +25,11 @@ public class UdpClientHandler extends SimpleChannelInboundHandler<DatagramPacket
         Msg msg=null;
         switch (msgType){
             case Msg.TANK_NEW_MSG:
+//                TankNewMsg myTankMsg = new TankNewMsg(tc.myTank);
+//                ByteBuf data= Unpooled.directBuffer();
+//
+//                myTankMsg.write(data);
+//                ctx.writeAndFlush(new DatagramPacket(data,packet.sender()));
                 msg=new TankNewMsg(tc);
                 msg.parse(buf);
                 break;
