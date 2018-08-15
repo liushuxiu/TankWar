@@ -37,6 +37,7 @@ public class TankNewMsg implements Msg{
             boolean good = buf.readBoolean();
 
             Tank t = new Tank(x,y,good,dir,tc);
+            t.id=id;
             tc.tanks.add(t);
          //   System.err.println("id:"+id+"  x:"+x+" y:"+y+" dir: "+dir+" good: "+good);
     }

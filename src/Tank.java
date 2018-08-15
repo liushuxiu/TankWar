@@ -260,8 +260,8 @@ public class Tank {
         }
 
 
-        if (dir != oldDir && oldDir != Dir.STOP && dir != Dir.STOP) {
-            System.err.println("dir:" + dir + "   oldDir:" + oldDir);
+        if (dir != oldDir ) {
+            System.out.println( oldDir + "=====>  " + dir);
             TankMoveMsg msg = new TankMoveMsg(id, dir);
 
             tc.nc.send(tc.nc.myChannel, msg);
