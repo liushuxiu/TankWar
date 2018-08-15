@@ -17,6 +17,7 @@ public  class UdpServerHandler extends SimpleChannelInboundHandler<DatagramPacke
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket packet) throws Exception {
 
+        System.out.println(" server received a packet");
 
 
         ByteBuf buf = packet.copy().content();
@@ -24,8 +25,8 @@ public  class UdpServerHandler extends SimpleChannelInboundHandler<DatagramPacke
         for (int i = 0; i < clients.size(); i++) {
              buf.retain();
              TankServer.Client client = clients.get(i);
-            System.err.println(client.ip);
-            System.err.println(client.udpPort);
+//            System.err.println(client.ip);
+//            System.err.println(client.udpPort);
               ctx.writeAndFlush(new DatagramPacket(buf, new InetSocketAddress(client.ip, client.udpPort)));
 
         }

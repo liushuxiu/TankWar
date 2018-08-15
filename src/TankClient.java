@@ -136,6 +136,7 @@ public Tank myTank = new Tank(50, 50,true, Dir.STOP, this);
         public void keyPressed(KeyEvent e) {
             myTank.keyPressed(e);
 
+
         }
     }
 
