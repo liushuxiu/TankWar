@@ -19,7 +19,7 @@ public class TcpClientHandler extends SimpleChannelInboundHandler<String > {
         System.out.println("client 得到服务器分配的ID :"+msg);
         int id=Integer.valueOf(msg);
         tc.myTank.id=id;
-        ctx.writeAndFlush(String.valueOf(NetClient.UDP_PORT_START));
+        ctx.writeAndFlush(String.valueOf(tc.nc.udpPort));
 
     }
 

@@ -1,10 +1,9 @@
 
 
+import org.omg.CORBA.INTERNAL;
+
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +12,15 @@ public class TankClient extends Frame {
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
     public static final int TCP_PORT = 8888;
-    public static final String IP="127.0.0.1";
+    public static final String IP = "127.0.0.1";
+
+    boolean connected=false;
 
 
- public    NetClient nc = new NetClient(this);
+    public NetClient nc = new NetClient(this);
+    ConnDialog dialog = new ConnDialog();
 
-public Tank myTank = new Tank(50, 50,true, Dir.STOP, this);
+    public Tank myTank = new Tank(50, 50, true, Dir.STOP, this);
 //    Tank enemyTank = new Tank(120, 80,false, this);
     // Missile m= new Missile(50,50, Tank.Direction.R);
 
@@ -26,7 +28,7 @@ public Tank myTank = new Tank(50, 50,true, Dir.STOP, this);
 
     List<Missile> missiles = new ArrayList<>();
 
-    List<Explode> explodes=new ArrayList<>();
+    List<Explode> explodes = new ArrayList<>();
 //    Explode e = new Explode(70,70,this );
 
     Image offScreenImage = null;
@@ -47,7 +49,7 @@ public Tank myTank = new Tank(50, 50,true, Dir.STOP, this);
             missile.draw(g);
         }
         for (int i = 0; i < explodes.size(); i++) {
-            Explode e =explodes.get(i);
+            Explode e = explodes.get(i);
             e.draw(g);
 
         }
@@ -107,7 +109,57 @@ public Tank myTank = new Tank(50, 50,true, Dir.STOP, this);
         setVisible(true);
         new Thread(new PaintThread()).start();
 
-        nc.start(IP,TCP_PORT);
+   //     nc.start(IP, TCP_PORT);
+    }
+
+    class ConnDialog extends Dialog {
+        Button b = new Button("确定");
+        TextField tfip = new TextField("127.0.0.1",12);
+        TextField tftcpport = new TextField(""+TankServer.TCP_PORT,4);
+        TextField tfudpport = new TextField("2222",4);
+
+        public ConnDialog() {
+            super(TankClient.this, true);
+            this.setLayout(new FlowLayout());
+            this.add(new Label("IP: "));
+            this.add(tfip);
+
+            this.add(new Label("Port: "));
+            this.add(tftcpport);
+
+            this.add(new Label("My UDP port: "));
+            this.add(tfudpport);
+            this.setLocation(300,300);
+
+
+            this.add(b);
+
+            this.pack();
+            this.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    setVisible(false);
+                }
+            });
+
+            b.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String  ip = tfip.getText().trim();
+                    int port= Integer.parseInt(tftcpport.getText().trim());
+                    int udpport=Integer.parseInt(tfudpport.getText().trim());
+                    nc.setUdpPort(udpport);
+                    nc.start(ip, port);
+                    setVisible(false);
+
+
+                }
+            });
+
+
+        }
+
+
     }
 
     private class PaintThread implements Runnable {
@@ -129,13 +181,29 @@ public Tank myTank = new Tank(50, 50,true, Dir.STOP, this);
 
         @Override
         public void keyReleased(KeyEvent e) {
-            myTank.keyReleased(e);
+
+            if (connected)
+                myTank.keyReleased(e);
+
+
+
+
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
-            myTank.keyPressed(e);
+            int key = e.getKeyCode();
 
+            if (key == KeyEvent.VK_C){
+                dialog.setVisible(true);
+                connected=true;
+            }else {
+                if (connected)
+                {
+                    myTank.keyPressed(e);
+                }
+
+            }
 
         }
     }

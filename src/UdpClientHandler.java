@@ -38,6 +38,12 @@ public class UdpClientHandler extends SimpleChannelInboundHandler<DatagramPacket
                 msg.parse(buf);
                 break;
 
+            case Msg.TANK_MISSILE_MSG:
+                msg = new MissileMsg(tc);
+                msg.parse(buf);
+                break;
+
+
 
         }
 

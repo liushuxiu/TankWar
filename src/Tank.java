@@ -125,8 +125,13 @@ public class Tank {
         }
         int x = this.x + Tank.WIDTH / 2 - Missile.WIDTH / 2;
         int y = this.y + Tank.HEIGHT / 2 - Missile.HEIGHT / 2;
-        Missile m = new Missile(x, y, good, ptDir, this.tc);
+        Missile m = new Missile(id,x, y, good, ptDir, this.tc);
+
+
         tc.missiles.add(m);
+
+        MissileMsg msg = new MissileMsg(m);
+        tc.nc.send(tc.nc.myChannel, msg);
         return m;
 
     }
@@ -261,8 +266,8 @@ public class Tank {
 
 
         if (dir != oldDir ) {
-            System.out.println( oldDir + "=====>  " + dir);
-            TankMoveMsg msg = new TankMoveMsg(id, dir);
+       //     System.out.println( oldDir + "=====>  " + dir);
+            TankMoveMsg msg = new TankMoveMsg(id, x,y,dir);
 
             tc.nc.send(tc.nc.myChannel, msg);
 

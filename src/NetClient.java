@@ -18,15 +18,22 @@ public class NetClient {
     Channel myChannel;
 
 
-    public static int UDP_PORT_START = 2225;
     public int udpPort;
 
     public NetClient(TankClient tc) {
         this.tc = tc;
     }
 
+    public int getUdpPort() {
+        return udpPort;
+    }
+
+    public void setUdpPort(int udpPort) {
+        this.udpPort = udpPort;
+    }
+
     public NetClient() {
-        udpPort = UDP_PORT_START++;
+
     }
 
     public void start(String ip, int tcpPort) {
@@ -58,7 +65,7 @@ public class NetClient {
                             .channel(NioDatagramChannel.class)
                             .handler(new UdpClientHandler(tc));
 
-                    Channel ch = b.bind(UDP_PORT_START).sync().channel();
+                    Channel ch = b.bind(udpPort).sync().channel();
                     myChannel = ch;
 
 //                    ch.writeAndFlush(new DatagramPacket(
@@ -79,7 +86,7 @@ public class NetClient {
     }
 
     public void send(Channel ch, Msg msg)  {
-        System.out.println("我改变了方向");
+     //   System.out.println("我改变了方向");
         ByteBuf buf = Unpooled.directBuffer();
         msg.write(buf);
        try {

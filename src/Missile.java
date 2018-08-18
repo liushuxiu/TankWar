@@ -10,10 +10,11 @@ public class Missile {
     int x, y;
     Dir dir;
 
+    int tankId;
     private boolean live = true;
     private TankClient tc;
 
-    private boolean good;
+     boolean good;
 
 
     public boolean isLive() {
@@ -27,10 +28,11 @@ public class Missile {
         this.dir = dir;
     }
 
-    public Missile(int x, int y, boolean good, Dir dir, TankClient tc) {
+    public Missile(int tankId, int x, int y, boolean good, Dir dir, TankClient tc) {
         this(x, y, dir);
         this.tc = tc;
         this.good=good;
+        this.tankId=tankId;
     }
 
     @Override
