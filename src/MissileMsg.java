@@ -20,6 +20,7 @@ public class MissileMsg implements  Msg {
         buf.writeInt(msgType);
 
         buf.writeInt(m.tankId);
+        buf.writeInt(m.id);
         buf.writeInt(m.x);
         buf.writeInt(m.y);
         buf.writeInt(m.dir.ordinal());
@@ -34,12 +35,14 @@ public class MissileMsg implements  Msg {
         if (tankId==tc.myTank.id) {
             return;
         }
+        int id=buf.readInt();
         int x=buf.readInt();
         int y=buf.readInt();
         Dir dir =Dir.values()[buf.readInt()];
         boolean good = buf.readBoolean();
 
         Missile m= new Missile(tankId,x,y,good,dir,tc);
+        m.id=id;
         tc.missiles.add(m);
 
     }

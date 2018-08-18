@@ -10,8 +10,11 @@ public class Missile {
     int x, y;
     Dir dir;
 
+    public static int ID=1;
+    int id;
+
     int tankId;
-    private boolean live = true;
+     boolean live = true;
     private TankClient tc;
 
      boolean good;
@@ -33,6 +36,7 @@ public class Missile {
         this.tc = tc;
         this.good=good;
         this.tankId=tankId;
+        this.id=ID++;
     }
 
     @Override

@@ -179,22 +179,20 @@ public class Tank {
         if (y + Tank.HEIGHT > TankClient.GAME_HEIGHT) y = TankClient.GAME_HEIGHT - Tank.HEIGHT;
 
         int count = 0;
-        if (!good) {
-            Dir[] dirs = Dir.values();
-
-            if (step == 0) {
-                step = random.nextInt(12) + 3;
-                int randomNext = random.nextInt(dirs.length);
-                dir = dirs[randomNext];
-            }
-
-            step--;
-            if (random.nextInt(50) > 48) {
-                this.fire();
-            }
-
-
-        }
+//        if (!good) {
+//            Dir[] dirs = Dir.values();
+//
+//            if (step == 0) {
+//                step = random.nextInt(12) + 3;
+//                int randomNext = random.nextInt(dirs.length);
+//                dir = dirs[randomNext];
+//            }
+//
+//            step--;
+//            if (random.nextInt(50) > 48) {
+//                this.fire();
+//            }
+//        }
     }
 
     public void keyPressed(KeyEvent e) {
