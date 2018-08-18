@@ -17,6 +17,7 @@ public class NetClient {
     TankClient tc;
     Channel myChannel;
 
+    String serverIp;
 
     public int udpPort;
 
@@ -37,6 +38,7 @@ public class NetClient {
     }
 
     public void start(String ip, int tcpPort) {
+        serverIp=ip;
 
         try {
             startTcpClient(ip, tcpPort);
@@ -90,7 +92,7 @@ public class NetClient {
         ByteBuf buf = Unpooled.directBuffer();
         msg.write(buf);
        try {
-           ch.writeAndFlush(new DatagramPacket(buf, new InetSocketAddress("127.0.0.1", 6666))).sync();
+           ch.writeAndFlush(new DatagramPacket(buf, new InetSocketAddress(serverIp, 6666))).sync();
        }catch (Exception e){
            e.printStackTrace();
        }
