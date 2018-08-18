@@ -4,9 +4,12 @@
 
 2. 快速启动
 
-      1）运行服务端TankServer类的main方法
-      2）运行客户端TankClient类的main方法，然后在键盘上输入C， 弹出窗口提示输入ip, tcp_port,udp_port，当启动多个客户端时，udp_port不能和其他客户端相同。
-      3）按空格键发子弹，方向键控制移动。
+    1）运行服务端TankServer类的main方法
+      
+      
+    2）运行客户端TankClient类的main方法，然后在键盘上输入C， 弹出窗口提示输入ip, tcp_port,udp_port，当启动多个客户端时，udp_port不能和其他客户端相同。
+      
+    3）按空格键发子弹，方向键控制移动。
 
 
 
