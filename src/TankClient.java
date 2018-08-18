@@ -162,9 +162,14 @@ public class TankClient extends Frame {
                     int port= Integer.parseInt(tftcpport.getText().trim());
                     int udpport=Integer.parseInt(tfudpport.getText().trim());
                     nc.setUdpPort(udpport);
-                    nc.start(ip, port);
                     setVisible(false);
 
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            nc.start(ip, port);
+                        }
+                    }).start();
 
                 }
             });

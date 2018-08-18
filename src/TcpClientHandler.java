@@ -21,9 +21,15 @@ public class TcpClientHandler extends SimpleChannelInboundHandler<String > {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+        if (msg.equals("close")){
+            ctx.close();
+            return;
+        }
+
         if (nc.connected==false){
             nc.connected=true;
         }
+
 
         System.out.println(ctx.channel().remoteAddress());
         System.out.println("client 得到服务器分配的ID :"+msg);

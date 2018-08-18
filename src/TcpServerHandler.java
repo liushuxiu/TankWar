@@ -14,21 +14,21 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
 
-//        if (msg.indexOf("amituofo")!=-1){
-//
-//            int udpPort= Integer.valueOf(msg);
-//
-//            for (int i = 0; i < server.clients.size(); i++) {
-//                TankServer.Client client=server.clients.get(i);
-//                if (client.udpPort==udpPort){
-//                    server.clients.remove(client);
-//                    break;
-//                }
-//            }
-//            System.out.println("客户端死亡的TCP连接已经关闭");
-//            ctx.close();
-//            return;
-//        }
+        if (msg.indexOf("amituofo")!=-1){
+
+            int udpPort= Integer.valueOf(msg.substring(8));
+
+            for (int i = 0; i < server.clients.size(); i++) {
+                TankServer.Client client=server.clients.get(i);
+                if (client.udpPort==udpPort){
+                    server.clients.remove(client);
+                    break;
+                }
+            }
+            System.out.println("客户端死亡的TCP连接已经关闭");
+            ctx.close();
+            return;
+        }
 
         String address= String.valueOf(ctx.channel().remoteAddress());
          address=address.replace("/", "");
