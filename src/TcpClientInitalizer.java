@@ -9,8 +9,14 @@ import io.netty.util.CharsetUtil;
 
 public class TcpClientInitalizer extends ChannelInitializer<SocketChannel> {
     private TankClient tc;
+    private NetClient nc;
     public TcpClientInitalizer(TankClient tc) {
         this.tc=tc;
+    }
+
+    public TcpClientInitalizer(TankClient tc, NetClient netClient) {
+        this.tc=tc;
+        this.nc=netClient;
     }
 
 
@@ -22,6 +28,6 @@ public class TcpClientInitalizer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new LengthFieldPrepender(4));
         pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
         pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
-        pipeline.addLast(new TcpClientHandler(tc));
+        pipeline.addLast(new TcpClientHandler(tc,nc));
     }
 }

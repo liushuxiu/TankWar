@@ -2,6 +2,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 public class TcpClientHandler extends SimpleChannelInboundHandler<String > {
+    private NetClient nc;
     private TankClient tc;
     private TankServer server;
     public TcpClientHandler(TankClient tc) {
@@ -13,8 +14,17 @@ public class TcpClientHandler extends SimpleChannelInboundHandler<String > {
 
     }
 
+    public TcpClientHandler(TankClient tc, NetClient nc) {
+        this.tc=tc;
+        this.nc=nc;
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+        if (nc.connected==false){
+            nc.connected=true;
+        }
+
         System.out.println(ctx.channel().remoteAddress());
         System.out.println("client 得到服务器分配的ID :"+msg);
         int id=Integer.valueOf(msg);
@@ -31,13 +41,13 @@ public class TcpClientHandler extends SimpleChannelInboundHandler<String > {
     }
 
 
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush("close");
-
-        ctx.close();
-        System.out.println("TCP连接已经关闭");
-    }
+//    @Override
+//    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+//        ctx.writeAndFlush("close");
+//
+//        ctx.close();
+//        System.out.println("TCP连接已经关闭");
+//    }
 
 
 

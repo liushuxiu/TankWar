@@ -54,6 +54,9 @@ public class TankClient extends Frame {
                // MissileDeadMsg deadMsg =new MissileDeadMsg(myTank.id, missile.id);
                 MissileDeadMsg deadMsg =new MissileDeadMsg(missile.tankId, missile.id);
                 nc.send(nc.myChannel,deadMsg);
+                nc.connected=false;
+
+                nc.removeClient(nc.tcpChannel,"amituofo"+nc.udpPort);
 
             }
             missile.draw(g);

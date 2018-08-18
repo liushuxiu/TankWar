@@ -16,7 +16,9 @@ public class NetClient {
 
     TankClient tc;
     Channel myChannel;
+    Channel tcpChannel;
 
+  volatile    boolean connected =false;
     String serverIp;
 
     public int udpPort;
@@ -41,11 +43,10 @@ public class NetClient {
         serverIp=ip;
 
         try {
-            startTcpClient(ip, tcpPort);
-
 
             startUdpClient();
 
+            startTcpClient(ip, tcpPort);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,6 +75,9 @@ public class NetClient {
 //                            Unpooled.copiedBuffer("来自客户端:南无本师释迦牟尼佛", CharsetUtil.UTF_8),
 //                            new InetSocketAddress("127.0.0.1", 6666))).sync();
 
+                    while (!connected){
+                       Thread.currentThread().sleep(100);
+                    }
                     TankNewMsg msg = new TankNewMsg(tc.myTank);
                     send(ch,msg);
                     ch.closeFuture().await();
@@ -105,7 +109,7 @@ public class NetClient {
         try {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(worker).channel(NioSocketChannel.class)
-                    .handler(new TcpClientInitalizer(tc));
+                    .handler(new TcpClientInitalizer(tc,this));
             ChannelFuture channelFuture = bootstrap.connect(ip, TCP_PORT).sync();
 //            Scanner in = new Scanner(System.in);
 //            while (in.hasNext()) {
@@ -113,6 +117,7 @@ public class NetClient {
 //                channelFuture.channel().writeAndFlush(a);
 //
 //            }
+            tcpChannel=channelFuture.channel();
             channelFuture.channel().closeFuture().sync();
         } finally {
             worker.shutdownGracefully();
@@ -120,4 +125,7 @@ public class NetClient {
     }
 
 
+    public void removeClient(Channel tcpChannel, String udpPort) {
+        tcpChannel.writeAndFlush(udpPort);
+    }
 }
